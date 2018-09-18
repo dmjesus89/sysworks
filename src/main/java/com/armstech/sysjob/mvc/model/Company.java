@@ -1,7 +1,10 @@
 package com.armstech.sysjob.mvc.model;
 
+import java.time.LocalDate;
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -31,7 +34,10 @@ public class Company {
 	@Enumerated(EnumType.STRING)
 	private CompanyTypeEnum companyType;
 	
-	@OneToOne
+	@Column(name = "dt_cadastro")
+	private LocalDate dtCadastro;
+	
+	@OneToOne(cascade = CascadeType.ALL)
 	private Address address;
 	
 	@OneToMany

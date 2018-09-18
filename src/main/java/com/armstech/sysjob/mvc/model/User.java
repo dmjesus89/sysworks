@@ -3,7 +3,6 @@ package com.armstech.sysjob.mvc.model;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -13,6 +12,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
@@ -25,13 +25,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.armstech.sysjob.mvc.model.security.Authority;
 import com.armstech.sysjob.mvc.model.security.UserRole;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.Data;
 
-//@ApiModel(description = "Toda descricacao sobre o usuario")
-@Data
+
 @Entity(name = "user")
+@Data
 public class User implements UserDetails {
 
 	@Id
@@ -40,42 +39,42 @@ public class User implements UserDetails {
 	private Long id;
 
 	@NotNull
-	@Size(min=1, max=20)
+	@Size(min = 1, max = 20)
 	private String username;
-	
+
 	@NotNull
 	private String password;
-	
+
 	@NotNull
-	@Size(min=1, max=20)
+	@Size(min = 1, max = 20)
 	private String mail;
-	
+
 	@NotNull
 	private String cpf;
+
 	
 	@Column(name = "dt_cadastro")
 	private LocalDate dtCadastro;
-	
-	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private List<Phone> phones;
 
-	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//	@NotNull
+//	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+//	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//	private List<Phone> phones = new ArrayList<>();
+
+	
+	@OneToOne(cascade = CascadeType.ALL)
 	private Address address;
 
-	
 	@JsonIgnore
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Set<UserRole> userRoles = new HashSet<>();
-	 
-	
+
 	@JsonIgnore
 	@Transient
 	public boolean isInativo() {
 		return !this.enabled;
 	}
-	
+
 	private boolean enabled = true;
 
 	@Override
@@ -104,6 +103,5 @@ public class User implements UserDetails {
 	public boolean isEnabled() {
 		return enabled;
 	}
-
 
 }

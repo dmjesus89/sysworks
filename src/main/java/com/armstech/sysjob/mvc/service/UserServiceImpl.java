@@ -7,11 +7,8 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
 
-import javax.transaction.Transactional;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -43,7 +40,8 @@ public class UserServiceImpl {
 		return listUser;
 	}
 
-	public List<User> getCompanysByFilter(UserFilter userFilter) {
+	public List<User> getByFilter(UserFilter userFilter) {
+		//return this.userRepository.getByFilter(userFilter);
 		return null;
 	}
 
@@ -68,8 +66,11 @@ public class UserServiceImpl {
 	
 	public User update(Long id, User user) {
 		User userSaved = this.getUserById(id);
+		System.out.println(user.getAddress().getId());
+		System.out.println(userSaved.getAddress().getId());
 		BeanUtils.copyProperties(user, userSaved, "id");
-		userRepository.save(user);
+		userSaved.setPassword(passwordEncoder.encode(userSaved.getPassword()));
+		userRepository.save(userSaved);
 		return userSaved;
 
 	}

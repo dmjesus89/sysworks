@@ -1,12 +1,12 @@
 package com.armstech.sysjob.mvc.resource;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.armstech.sysjob.api.event.ResourceCreateEvent;
 import com.armstech.sysjob.mvc.model.Company;
 import com.armstech.sysjob.mvc.model.filter.CompanyFilter;
-import com.armstech.sysjob.mvc.service.CompanyServicempl;
+import com.armstech.sysjob.mvc.service.CompanyServiceImpl;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,28 +30,15 @@ import lombok.extern.slf4j.Slf4j;
 public class CompanyResource {
 
 	@Autowired
-	private CompanyServicempl companyService;
+	private CompanyServiceImpl companyService;
 
 	@Autowired
 	private ApplicationEventPublisher publisher;
-	
+
 	@GetMapping
-	public ResponseEntity<List<Company>> getCompanys() {
-		List<Company> listCompany = companyService.getCompanys();
-		if (!listCompany.isEmpty()) {
-			return ResponseEntity.ok(listCompany);
-		}
-		return ResponseEntity.notFound().build();
+	public Page<Company> getCompanysByFilter(CompanyFilter companyFilter, Pageable page) {
+		return companyService.getByFilter(companyFilter, page);
 	}
-	
-	public ResponseEntity<List<Company>> getCompanysByFilter(CompanyFilter companyFilter) {
-		List<Company> listCompany = companyService.getCompanysByFilter(companyFilter);
-		if (!listCompany.isEmpty()) {
-			return ResponseEntity.ok(listCompany);
-		}
-		return ResponseEntity.notFound().build();
-	}
-	
 
 	@GetMapping("/{id}")
 	public ResponseEntity<Company> getCompanyById(@PathVariable Long id) {

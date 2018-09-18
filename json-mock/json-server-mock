@@ -1,0 +1,20 @@
+users: [
+    {
+        "username": "dmjesus89",
+        "password": "Cardif88!",
+        "mail": "dmjesus89",
+        "cpf": "04064842529",
+        "address": {
+            "street":"rua aymore moreira",
+            "number": 80,
+            "neighborhood":"paralela",
+            "city":"salvador",
+            "state":"BA",
+            "country":"brazil"
+        },
+        "phones": [{
+            "number":"11985336043",
+            "phoneType": "LANDLINE"
+        }]
+    }
+]

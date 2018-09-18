@@ -9,8 +9,6 @@ import lombok.Data;
 @Data
 public class VacancyFilter {
 
-	// private CompanyFilter company;
-
 	private String description;
 
 	@DateTimeFormat(pattern = "yyyy-MM-dd")

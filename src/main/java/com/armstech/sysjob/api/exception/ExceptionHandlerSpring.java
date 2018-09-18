@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import javax.validation.ConstraintViolationException;
+
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -76,13 +78,23 @@ public class ExceptionHandlerSpring extends ResponseEntityExceptionHandler {
 	public ResponseEntity<Object> handleNestedServletException(DataIntegrityViolationException ex, WebRequest request) {
 		
 		String msgUser = messageSource.getMessage("msg.default_error", null, LocaleContextHolder.getLocale());
-		String msgDeveloper = null;
+		String msgDeveloper = ExceptionUtils.getRootCauseMessage(ex);
 		
 		
 		return handleExceptionInternal(ex, Arrays.asList(msgUser, msgDeveloper), new HttpHeaders(),
 				HttpStatus.BAD_REQUEST, request);
 	}
-
+	
+	@ExceptionHandler({ ConstraintViolationException.class })
+	public ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException ex, WebRequest request) {
+		
+		String msgUser = messageSource.getMessage("msg.default_error", null, LocaleContextHolder.getLocale());
+		String msgDeveloper = ExceptionUtils.getRootCauseMessage(ex);
+		
+		
+		return handleExceptionInternal(ex, Arrays.asList(msgUser, msgDeveloper), new HttpHeaders(),
+				HttpStatus.BAD_REQUEST, request);
+	}
 
 	private List<Error> createListError(BindingResult results) {
 		List<Error> listErros = new ArrayList<>();

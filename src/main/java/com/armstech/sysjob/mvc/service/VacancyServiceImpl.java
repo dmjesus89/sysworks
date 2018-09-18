@@ -16,7 +16,7 @@ import com.armstech.sysjob.mvc.repository.CompanyRepository;
 import com.armstech.sysjob.mvc.repository.VacancyRepository;
 
 @Service
-public class VacancyService {
+public class VacancyServiceImpl {
 
 	@Autowired
 	private VacancyRepository vacancyRepository;

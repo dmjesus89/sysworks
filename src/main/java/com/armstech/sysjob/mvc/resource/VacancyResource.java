@@ -25,7 +25,7 @@ import com.armstech.sysjob.api.exception.CompanyNotFoudException;
 import com.armstech.sysjob.api.exception.ExceptionHandlerSpring.Error;
 import com.armstech.sysjob.mvc.model.Vacancy;
 import com.armstech.sysjob.mvc.model.filter.VacancyFilter;
-import com.armstech.sysjob.mvc.service.VacancyService;
+import com.armstech.sysjob.mvc.service.VacancyServiceImpl;
 
 @RestController("/vacancys")
 public class VacancyResource {
@@ -34,7 +34,7 @@ public class VacancyResource {
 	private ApplicationEventPublisher publisher;
 
 	@Autowired
-	private VacancyService vacancyService;
+	private VacancyServiceImpl vacancyService;
 
 	@Autowired
 	private MessageSource messageSource;

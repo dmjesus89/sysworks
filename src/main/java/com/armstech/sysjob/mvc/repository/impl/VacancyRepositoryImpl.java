@@ -14,6 +14,7 @@ import javax.persistence.criteria.Root;
 import org.springframework.util.StringUtils;
 
 import com.armstech.sysjob.mvc.model.Vacancy;
+import com.armstech.sysjob.mvc.model.Vacancy_;
 import com.armstech.sysjob.mvc.model.filter.VacancyFilter;
 import com.armstech.sysjob.mvc.repository.query.VacancyRepositoryQuery;
 
@@ -40,30 +41,18 @@ public class VacancyRepositoryImpl implements VacancyRepositoryQuery {
 		List<Predicate> predicates = new ArrayList<>();
 
 		if (!StringUtils.isEmpty(vacancyFilter.getDescription())) {
-			predicates.add(builder.like(builder.lower(root.get("description")),
+			predicates.add(builder.like(builder.lower(root.get(Vacancy_.description)),
 					"%" + vacancyFilter.getDescription().toLowerCase() + "%"));
 		}
 
-//		predicates.add(builder.and(
-//				builder.lower(root.get("description")), "%" + ""
-//				));
-//		
-//		
-//		if(vacancyFilter.getStatus() != null) {
-//			predicates.add(vacancyFilter.getDescription());
-//		}
-//		if(vacancyFilter.getDtEnd() != null) {
-//			predicates.add(vacancyFilter.getDescription());
-//		}
-//		if(vacancyFilter.getDtInsert() != null) {
-//			predicates.add(vacancyFilter.getDescription());
-//		}
-//		if(vacancyFilter.getDtStart() != null) {
-//			predicates.add(vacancyFilter.getDescription());
-//		}
-//		return predicates.toArray(new Predicate(predicates.size()));
+		if (vacancyFilter.getDtInsert() != null) {
+			predicates.add(builder.greaterThanOrEqualTo(root.get(Vacancy_.dtStart), vacancyFilter.getDtStart()));
+		}
+		if (vacancyFilter.getDtEnd() != null) {
+			predicates.add(builder.lessThanOrEqualTo(root.get(Vacancy_.dtEnd), vacancyFilter.getDtEnd()));
+		}
+		return predicates.toArray(new Predicate[predicates.size()]);
 
-		return null;
 	}
 
 }

@@ -47,7 +47,7 @@ public class UserResource {
 	}
 	
 	public ResponseEntity<List<User>> getUserByFilter(UserFilter userFilter) {
-		List<User> listUser = userService.getCompanysByFilter(userFilter);
+		List<User> listUser = userService.getByFilter(userFilter);
 		if (!listUser.isEmpty()) {
 			return ResponseEntity.ok(listUser);
 		}
